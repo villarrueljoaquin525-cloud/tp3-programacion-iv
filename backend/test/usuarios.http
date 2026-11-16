@@ -1,0 +1,24 @@
+### REGISTRAR USUARIO
+POST http://localhost:3000/api/usuarios/registro
+Content-Type: application/json
+
+{
+    "nombre": "Rocio",
+    "email": "rocio@test.com",
+    "password": "123456"
+}
+
+
+### INICIAR SESIÓN
+POST http://localhost:3000/api/usuarios/login
+Content-Type: application/json
+
+{
+    "email": "rocio@test.com",
+    "password": "123456"
+}
+
+
+### CONSULTAR PERFIL (REEMPLAZAR EL TOKEN)
+GET http://localhost:3000/api/usuarios/perfil
+Authorization:

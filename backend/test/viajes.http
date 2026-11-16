@@ -1,0 +1,97 @@
+### ==========================================
+### GESTION DE TRANSPORTE - VIAJES
+### ==========================================
+
+### TOKEN DE AUTENTICACION
+@token =
+
+### ==========================================
+### CRUD DE VIAJES
+### ==========================================
+
+### LISTAR TODOS LOS VIAJES
+GET http://localhost:3000/api/viajes
+Authorization: Bearer {{token}}
+
+
+### REGISTRAR VIAJE
+POST http://localhost:3000/api/viajes
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "vehiculo_id": 2,
+    "conductor_id": 2,
+    "fecha_salida": "2026-11-16 08:00:00",
+    "fecha_llegada": "2026-11-16 14:00:00",
+    "origen": "La Rioja",
+    "destino": "Cordoba",
+    "kilometros": 450,
+    "observaciones": "Viaje de prueba"
+}
+
+
+### OBTENER VIAJE POR ID
+GET http://localhost:3000/api/viajes/1
+Authorization: Bearer {{token}}
+
+
+### ACTUALIZAR VIAJE
+PUT http://localhost:3000/api/viajes/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "vehiculo_id": 2,
+    "conductor_id": 2,
+    "fecha_salida": "2026-11-16 08:00:00",
+    "fecha_llegada": "2026-11-16 15:00:00",
+    "origen": "La Rioja",
+    "destino": "Cordoba",
+    "kilometros": 460,
+    "observaciones": "Viaje actualizado"
+}
+
+### ELIMINAR VIAJE
+DELETE http://localhost:3000/api/viajes/1
+Authorization: Bearer {{token}}
+
+### ==========================================
+### HISTORIALES
+### ==========================================
+
+### HISTORIAL DE VIAJES POR VEHICULO
+GET http://localhost:3000/api/viajes/historial/vehiculo/2
+Authorization: Bearer {{token}}
+
+### HISTORIAL DE VIAJES POR CONDUCTOR
+GET http://localhost:3000/api/viajes/historial/conductor/2
+Authorization: Bearer {{token}}
+
+### ==========================================
+### KILOMETROS TOTALES
+### ==========================================
+
+### KILOMETROS TOTALES POR VEHICULO
+GET http://localhost:3000/api/viajes/kilometros/vehiculo/2
+Authorization: Bearer {{token}}
+
+
+### KILOMETROS TOTALES POR CONDUCTOR
+GET http://localhost:3000/api/viajes/kilometros/conductor/2
+Authorization: Bearer {{token}}
+### PROBAR FECHAS INCORRECTAS DE VIAJE
+POST http://localhost:3000/api/viajes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0ODY4MzE0LCJleHAiOjE3OTQ4ODI3MTR9.hSlVmpuibIeo8LemWbm9oB1XHHgWwp5-0zUc28Yb6xQ
+
+{
+    "vehiculo_id": 1,
+    "conductor_id": 1,
+    "fecha_salida": "2026-11-16T18:00:00",
+    "fecha_llegada": "2026-11-16T10:00:00",
+    "origen": "La Rioja",
+    "destino": "Córdoba",
+    "kilometros": 450,
+    "observaciones": "Prueba de validación"
+}

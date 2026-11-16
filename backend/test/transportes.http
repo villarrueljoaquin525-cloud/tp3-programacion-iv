@@ -1,0 +1,115 @@
+
+### ==========================================
+### GESTION DE TRANSPORTE - PRUEBAS HTTP
+### ==========================================
+
+### TOKEN DE AUTENTICACION
+@token =
+
+### ==========================================
+### VEHICULOS
+### ==========================================
+
+### LISTAR VEHICULOS
+GET http://localhost:3000/api/vehiculos
+Authorization: Bearer {{token}}
+
+
+### CREAR VEHICULO
+POST http://localhost:3000/api/vehiculos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "marca": "Mercedes Benz",
+    "modelo": "Accelo",
+    "patente": "AB123CD",
+    "anio": 2022,
+    "capacidad_carga": 5000
+}
+
+
+### OBTENER VEHICULO POR ID
+GET http://localhost:3000/api/vehiculos/1
+Authorization: Bearer {{token}}
+
+
+### ACTUALIZAR VEHICULO
+PUT http://localhost:3000/api/vehiculos/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "marca": "Mercedes Benz",
+    "modelo": "Accelo 815",
+    "patente": "AB123CD",
+    "anio": 2023,
+    "capacidad_carga": 6000
+}
+
+
+### ELIMINAR VEHICULO
+DELETE http://localhost:3000/api/vehiculos/1
+Authorization: Bearer {{token}}
+
+
+### ==========================================
+### CONDUCTORES
+### ==========================================
+
+### LISTAR CONDUCTORES
+GET http://localhost:3000/api/conductores
+Authorization: Bearer {{token}}
+
+
+### CREAR CONDUCTOR
+POST http://localhost:3000/api/conductores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellido": "Perez",
+    "numero_documento": "30123456",
+    "numero_licencia": "LIC12345",
+    "fecha_alta_licencia": "2020-05-10",
+    "fecha_vencimiento_licencia": "2030-05-10"
+}
+
+
+### OBTENER CONDUCTOR POR ID
+GET http://localhost:3000/api/conductores/1
+Authorization: Bearer {{token}}
+
+### ACTUALIZAR CONDUCTOR
+PUT http://localhost:3000/api/conductores/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "nombre": "Juan",
+    "apellido": "Perez",
+    "numero_documento": "30123456",
+    "numero_licencia": "LIC12345",
+    "fecha_alta_licencia": "2020-05-10",
+    "fecha_vencimiento_licencia": "2030-05-10"
+}
+
+
+### ELIMINAR CONDUCTOR
+DELETE http://localhost:3000/api/conductores/1
+Authorization: Bearer {{token}}
+
+### PROBAR FECHAS INCORRECTAS DE CONDUCTOR
+POST http://localhost:3000/api/conductores
+Content-Type: application/json
+Authorization: Bearer PeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0ODY4MzE0LCJleHAiOjE3OTQ4ODI3MTR9.hSlVmpuibIeo8LemWbm9oB1XHHgWwp5-0zUc28Yb6xQ
+
+{
+    "nombre": "Prueba",
+    "apellido": "Test",
+    "numero_documento": "99999999",
+    "numero_licencia": "TEST999",
+    "fecha_alta_licencia": "2026-10-15",
+    "fecha_vencimiento_licencia": "2026-05-10"
+}
