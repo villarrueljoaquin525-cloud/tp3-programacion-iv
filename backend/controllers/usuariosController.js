@@ -1,92 +1,95 @@
+
 import pool from '../db.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-// REGISTRAR USUARIO
+// CREACIÓN DE CUENTAS
 export const registrarUsuario = async (req, res) => {
     try {
         const { nombre, email, password } = req.body;
 
-        const [usuarios] = await pool.execute(
+        const [coincidencias] = await pool.execute(
             'SELECT id FROM usuarios WHERE email = ?',
             [email]
         );
 
-        if (usuarios.length > 0) {
+        if (coincidencias.length !== 0) {
             return res.status(400).json({
-                mensaje: 'El email ya se encuentra registrado'
+                mensaje: 'Ya existe una cuenta con ese correo electrónico'
             });
         }
 
-        const passwordEncriptada = await bcrypt.hash(password, 10);
+        const claveSegura = await bcrypt.hash(password, 10);
 
-        const [resultado] = await pool.execute(
+        const [nuevoRegistro] = await pool.execute(
             'INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)',
-            [nombre, email, passwordEncriptada]
+            [nombre, email, claveSegura]
         );
 
         return res.status(201).json({
-            mensaje: 'Usuario registrado correctamente',
-            id: resultado.insertId
+            mensaje: 'La cuenta fue creada correctamente',
+            id: nuevoRegistro.insertId
         });
 
     } catch (error) {
-        console.error('Error al registrar usuario:', error);
+        console.error('Problema al crear la cuenta:', error);
+
         return res.status(500).json({
-            mensaje: 'Error interno del servidor'
+            mensaje: 'No fue posible completar el registro'
         });
     }
 };
 
-// INICIAR SESIÓN
+// VALIDACIÓN DE ACCESO
 export const iniciarSesion = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const [usuarios] = await pool.execute(
+        const [coincidencias] = await pool.execute(
             'SELECT * FROM usuarios WHERE email = ?',
             [email]
         );
 
-        if (usuarios.length === 0) {
+        if (coincidencias.length === 0) {
             return res.status(401).json({
-                mensaje: 'Email o contraseña incorrectos'
+                mensaje: 'Correo o contraseña incorrectos'
             });
         }
 
-        const usuario = usuarios[0];
+        const cuenta = coincidencias[0];
 
-        const passwordValida = await bcrypt.compare(
+        const claveCorrecta = await bcrypt.compare(
             password,
-            usuario.password
+            cuenta.password
         );
 
-        if (!passwordValida) {
+        if (!claveCorrecta) {
             return res.status(401).json({
-                mensaje: 'Email o contraseña incorrectos'
+                mensaje: 'Correo o contraseña incorrectos'
             });
         }
 
-        const token = jwt.sign(
-            { id: usuario.id },
+        const tokenAcceso = jwt.sign(
+            { id: cuenta.id },
             process.env.JWT_SECRET,
             { expiresIn: '4h' }
         );
 
         return res.status(200).json({
-            mensaje: 'Inicio de sesion exitoso',
-            token,
+            mensaje: 'Acceso concedido correctamente',
+            token: tokenAcceso,
             usuario: {
-                id: usuario.id,
-                nombre: usuario.nombre,
-                email: usuario.email
+                id: cuenta.id,
+                nombre: cuenta.nombre,
+                email: cuenta.email
             }
         });
 
     } catch (error) {
-        console.error('Error al iniciar sesión:', error);
+        console.error('Problema durante el acceso:', error);
+
         return res.status(500).json({
-            mensaje: 'Error interno del servidor'
+            mensaje: 'No fue posible iniciar sesión'
         });
     }
 };

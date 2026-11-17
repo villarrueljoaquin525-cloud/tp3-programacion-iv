@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:4000/api';
 
 function Historial() {
     const { token } = useAuth();
+    console.log('TOKEN:', token);
+console.log('API:', API_URL);
 
     const [viajes, setViajes] = useState([]);
     const [vehiculos, setVehiculos] = useState([]);

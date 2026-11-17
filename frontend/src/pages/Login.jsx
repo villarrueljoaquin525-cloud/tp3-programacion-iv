@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -52,9 +53,11 @@ function Login() {
 
     return (
         <main className="pagina-login">
+
             <section className="login-imagen">
+
                 <div className="login-ilustracion">
-                    <span>🚚</span>
+                    <span>GT</span>
                 </div>
 
                 <h1>Gestión de Transporte</h1>
@@ -63,10 +66,13 @@ function Login() {
                     Organizá tus vehículos, conductores y viajes
                     desde un solo lugar.
                 </p>
+
             </section>
 
             <section className="login-formulario">
+
                 <div className="login-contenido">
+
                     <Link to="/" className="volver-inicio">
                         ← Volver al inicio
                     </Link>
@@ -82,8 +88,12 @@ function Login() {
                     </p>
 
                     <form onSubmit={manejarLogin}>
+
                         <div className="campo">
-                            <label htmlFor="email">Correo electrónico</label>
+
+                            <label htmlFor="email">
+                                Correo electrónico
+                            </label>
 
                             <input
                                 id="email"
@@ -93,10 +103,14 @@ function Login() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 autoComplete="username"
                             />
+
                         </div>
 
                         <div className="campo">
-                            <label htmlFor="password">Contraseña</label>
+
+                            <label htmlFor="password">
+                                Contraseña
+                            </label>
 
                             <input
                                 id="password"
@@ -106,6 +120,7 @@ function Login() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 autoComplete="current-password"
                             />
+
                         </div>
 
                         {error && (
@@ -119,15 +134,21 @@ function Login() {
                             className="boton-ingresar"
                             disabled={cargando}
                         >
-                            {cargando ? 'Ingresando...' : 'Ingresar al sistema'}
+                            {cargando
+                                ? 'Ingresando...'
+                                : 'Ingresar al sistema'}
                         </button>
+
                     </form>
 
                     <p className="login-pie">
                         Gestión de Transporte © 2026
                     </p>
+
                 </div>
+
             </section>
+
         </main>
     );
 }

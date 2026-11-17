@@ -1,57 +1,70 @@
-import 'dotenv/config';
-import express from 'express';
-import passport from 'passport';
-import cors from 'cors';
 
+import 'dotenv/config';
+
+import express from 'express';
+import cors from 'cors';
+import passport from 'passport';
+
+// Configuración de autenticación
 import './middlewares/passport.js';
 
+// Importación de módulos
 import usuariosRoutes from './routes/usuarios.js';
 import vehiculosRoutes from './routes/vehiculos.js';
 import conductoresRoutes from './routes/conductores.js';
 import viajesRoutes from './routes/viajes.js';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// Configuración del servidor
+const servidor = express();
+const PUERTO = process.env.PORT || 3000;
 
-// MIDDLEWARES
-app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(express.json());
-app.use(passport.initialize());
+// Configuración de middlewares
+servidor.use(cors({
+    origin: 'http://localhost:5173'
+}));
 
-// RUTA PRINCIPAL
-app.get('/', (req, res) => {
+servidor.use(express.json());
+servidor.use(passport.initialize());
+
+// Ruta de bienvenida
+servidor.get('/', (req, res) => {
     res.status(200).json({
-        mensaje: 'API de Gestión de Transporte funcionando correctamente'
+        estado: 'Activo',
+        mensaje: 'Sistema de administración de transporte disponible'
     });
 });
 
-// RUTAS DE LA API
-app.use('/api/usuarios', usuariosRoutes);
-app.use('/api/vehiculos', vehiculosRoutes);
-app.use('/api/conductores', conductoresRoutes);
-app.use('/api/viajes', viajesRoutes);
+// Registro de rutas
+servidor.use('/api/usuarios', usuariosRoutes);
+servidor.use('/api/vehiculos', vehiculosRoutes);
+servidor.use('/api/conductores', conductoresRoutes);
+servidor.use('/api/viajes', viajesRoutes);
 
-// MANEJO DE RUTAS INEXISTENTES
-app.use((req, res) => {
+// Control de rutas no existentes
+servidor.use((req, res) => {
     res.status(404).json({
-        mensaje: 'Ruta no encontrada'
+        error: 'No se encontró el recurso solicitado'
     });
 });
 
-// MANEJO GENERAL DE ERRORES
-app.use((error, req, res, next) => {
-    console.error('Error:', error);
+// Control de errores
+servidor.use((error, req, res, next) => {
+    console.error('Se produjo un inconveniente:', error);
 
-    const estado = error.status || error.statusCode || 500;
+    const codigoEstado = error.status || error.statusCode || 500;
 
-    res.status(estado).json({
-        mensaje: estado === 400
-            ? 'Solicitud incorrecta'
-            : 'Error interno del servidor'
+    res.status(codigoEstado).json({
+        error: codigoEstado === 400
+            ? 'Los datos enviados no son válidos'
+            : 'Ocurrió un problema al procesar la solicitud'
     });
 });
 
-// INICIAR SERVIDOR
-app.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+// Puesta en marcha del servidor
+servidor.listen(PUERTO, () => {
+    console.log('-----------------------------------');
+    console.log(' SISTEMA DE GESTIÓN DE TRANSPORTE');
+    console.log(` Servidor activo en puerto ${PUERTO}`);
+    console.log(` Dirección: http://localhost:${PUERTO}`);
+    console.log('-----------------------------------');
 });

@@ -1,7 +1,8 @@
+
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const API_URL = 'http://localhost:3000/api/vehiculos';
+const API_URL = 'http://localhost:4000/api/vehiculos';
 
 const formularioInicial = {
     marca: '',
@@ -203,6 +204,7 @@ function Vehiculos() {
         setVehiculoEditando(null);
         setFormulario(formularioInicial);
         setError('');
+        setMensaje('');
     };
 
     return (
@@ -210,37 +212,52 @@ function Vehiculos() {
 
             <div className="encabezado-pagina">
                 <div>
-                    <span className="etiqueta">ADMINISTRACIÓN</span>
+                    <span className="etiqueta">GESTIÓN DE FLOTA</span>
                     <h1>Vehículos</h1>
-                    <p>Registrá y administrá los vehículos de transporte.</p>
+                    <p>
+                        Administrá y controlá los vehículos registrados en el sistema.
+                    </p>
                 </div>
 
                 <div className="contador-registros">
-                    🚛 {vehiculos.length} vehículos
+                    <strong>{String(vehiculos.length).padStart(2, '0')}</strong>
+                    <span>Vehículos registrados</span>
                 </div>
             </div>
 
             <div className="formulario-crud">
-                <h2>
-                    {vehiculoEditando ? 'Modificar vehículo' : 'Registrar vehículo'}
-                </h2>
+                <div className="tabla-encabezado">
+                    <div>
+                        <span className="etiqueta">
+                            {vehiculoEditando ? 'EDICIÓN DE DATOS' : 'NUEVO REGISTRO'}
+                        </span>
+
+                        <h2>
+                            {vehiculoEditando
+                                ? 'Modificar vehículo'
+                                : 'Registrar vehículo'}
+                        </h2>
+                    </div>
+                </div>
 
                 <form onSubmit={guardarVehiculo}>
                     <div className="campos-grid">
 
                         <div className="campo">
-                            <label>Marca</label>
+                            <label htmlFor="marca">Marca</label>
                             <input
+                                id="marca"
                                 name="marca"
                                 value={formulario.marca}
                                 onChange={manejarCambio}
-                                placeholder="Ej. Mercedes Benz"
+                                placeholder="Ej. Volkswagen"
                             />
                         </div>
 
                         <div className="campo">
-                            <label>Modelo</label>
+                            <label htmlFor="modelo">Modelo</label>
                             <input
+                                id="modelo"
                                 name="modelo"
                                 value={formulario.modelo}
                                 onChange={manejarCambio}
@@ -249,8 +266,9 @@ function Vehiculos() {
                         </div>
 
                         <div className="campo">
-                            <label>Patente</label>
+                            <label htmlFor="patente">Patente</label>
                             <input
+                                id="patente"
                                 name="patente"
                                 value={formulario.patente}
                                 onChange={manejarCambio}
@@ -260,8 +278,9 @@ function Vehiculos() {
                         </div>
 
                         <div className="campo">
-                            <label>Año</label>
+                            <label htmlFor="anio">Año</label>
                             <input
+                                id="anio"
                                 type="number"
                                 name="anio"
                                 value={formulario.anio}
@@ -271,8 +290,11 @@ function Vehiculos() {
                         </div>
 
                         <div className="campo">
-                            <label>Capacidad de carga (kg)</label>
+                            <label htmlFor="capacidad_carga">
+                                Capacidad de carga (kg)
+                            </label>
                             <input
+                                id="capacidad_carga"
                                 type="number"
                                 step="0.01"
                                 min="0.01"
@@ -285,11 +307,20 @@ function Vehiculos() {
 
                     </div>
 
-                    {error && <div className="mensaje-error">{error}</div>}
-                    {mensaje && <div className="mensaje-exito">{mensaje}</div>}
+                    {error && (
+                        <div className="mensaje-error">{error}</div>
+                    )}
+
+                    {mensaje && (
+                        <div className="mensaje-exito">{mensaje}</div>
+                    )}
 
                     <div className="acciones-formulario">
-                        <button type="submit" className="boton-guardar" disabled={cargando}>
+                        <button
+                            type="submit"
+                            className="boton-guardar"
+                            disabled={cargando}
+                        >
                             {cargando
                                 ? 'Guardando...'
                                 : vehiculoEditando
@@ -312,7 +343,14 @@ function Vehiculos() {
 
             <div className="tabla-contenedor">
                 <div className="tabla-encabezado">
-                    <h2>Vehículos registrados</h2>
+                    <div>
+                        <span className="etiqueta">BASE DE DATOS</span>
+                        <h2>Vehículos registrados</h2>
+                    </div>
+
+                    <span className="cantidad-tabla">
+                        Total: {vehiculos.length}
+                    </span>
                 </div>
 
                 {vehiculos.length === 0 ? (
@@ -342,7 +380,9 @@ function Vehiculos() {
                                         <td>{vehiculo.modelo}</td>
                                         <td>{vehiculo.patente}</td>
                                         <td>{vehiculo.anio}</td>
-                                        <td>{vehiculo.capacidad_carga}</td>
+                                        <td>
+                                            {Number(vehiculo.capacidad_carga).toLocaleString('es-AR')}
+                                        </td>
                                         <td>
                                             <div className="acciones-tabla">
                                                 <button

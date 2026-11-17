@@ -2,8 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext();
 
-const API_URL = 'http://localhost:3000/api';
-
+const API_URL = 'http://localhost:4000/api';
 export function AuthProvider({ children }) {
     const [usuario, setUsuario] = useState(() => {
         const guardado = sessionStorage.getItem('usuario');

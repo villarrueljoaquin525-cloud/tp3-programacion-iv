@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS gestion_transporte;
-USE gestion_transporte;
+CREATE DATABASE IF NOT EXISTS tp3_transporte;
+USE tp3_transporte;
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,

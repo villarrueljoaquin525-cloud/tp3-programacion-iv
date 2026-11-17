@@ -10,12 +10,12 @@ Content-Type: application/json
 
 
 ### INICIAR SESIÓN
-POST http://localhost:3000/api/usuarios/login
+POST http://localhost:4000/api/usuarios/login
 Content-Type: application/json
 
 {
-    "email": "rocio@test.com",
-    "password": "123456"
+    "email": "admin@transporte.com",
+    "password": "Admin123"
 }
 
 

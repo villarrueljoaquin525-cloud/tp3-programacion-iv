@@ -1,11 +1,14 @@
+
 import express from 'express';
 import passport from 'passport';
 
+// Funciones para administrar las cuentas
 import {
     registrarUsuario,
     iniciarSesion
 } from '../controllers/usuariosController.js';
 
+// Validaciones de datos
 import {
     validarRegistro,
     validarLogin
@@ -13,34 +16,35 @@ import {
 
 import { validarCampos } from '../middlewares/validarCampos.js';
 
-const router = express.Router();
+const rutasUsuarios = express.Router();
 
-// Registro
-router.post(
+// Crear una nueva cuenta
+rutasUsuarios.post(
     '/registro',
     validarRegistro,
     validarCampos,
     registrarUsuario
 );
 
-// Inicio de sesión
-router.post(
+// Verificar los datos de acceso
+rutasUsuarios.post(
     '/login',
     validarLogin,
     validarCampos,
     iniciarSesion
 );
 
-// Ruta protegida: requiere un JWT válido
-router.get(
+// Consultar información del usuario autenticado
+rutasUsuarios.get(
     '/perfil',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
         res.status(200).json({
-            mensaje: 'Acceso autorizado',
-            usuario: req.user
+            mensaje: 'Sesión verificada correctamente',
+            datosUsuario: req.user
         });
     }
 );
 
-export default router;
+// Exportar las rutas
+export default rutasUsuarios;
